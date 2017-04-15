@@ -1,6 +1,6 @@
 Player.getAmountOfItemInInv = function(id, data) {
 	let count = 0;
-	for(let i = 0; i < 36; i++) {
+	for(let i = 9; i < 45; i++) {
 		if(Player.getInventorySlot(i) == id && Player.getInventorySlotData(i) == data) {
 			count += Player.getInventorySlotCount(i);
 		}
