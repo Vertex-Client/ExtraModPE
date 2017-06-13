@@ -14,11 +14,24 @@ Player.getAmountOfItemInInv = function(id, data) {
 
 Player.addOrDropItem = function(id, amount, data) {
 	try {
-		let count_before = Player.getAmountOfItemInInv(id, data);
-		Player.addItemInventory(id, amount, data);
-		let count_after = Player.getAmountOfItemInInv(id, data);
-		if(!(count_after > count_before)) {
-			Level.dropItem(getPlayerX(), getPlayerY(), getPlayerZ(), 0, id, amount, data);
+		if(id == null || id == 0) {
+			throw new Error("You must specify an id above 0!");
+		}
+		if(amount == null) {
+			amount = 64;
+		}
+		if(data == null) {
+			data = 0;
+		}
+		if(amount > 0) {
+			let count_before = Player.getAmountOfItemInInv(id, data) + amount;
+			Player.addItemInventory(id, amount, data);
+			let count_after = Player.getAmountOfItemInInv(id, data);
+			if(count_after != count_before) {
+				Level.dropItem(getPlayerX(), getPlayerY(), getPlayerZ(), 0, id, count_before - count_after, data);
+			}
+		} else {
+			throw new Error("You can't add items with an amount below 1!");
 		}
 	} catch(e) {
 		clientMessage("Error: " + e);
